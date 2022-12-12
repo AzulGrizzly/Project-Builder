@@ -1,9 +1,30 @@
-from flet import flet, Page, Column, Row, Container, padding, alignment, LinearGradient, popup_menu_button, animation, control, Text
+from flet import (
+  flet,
+  Page,
+  Column,
+  Row,
+  Container,
+  padding,
+  alignment,
+  LinearGradient,
+  animation,
+  Text,
+  TextButton,
+  buttons,
+  transform,
+  icons,
+  IconButton
+)
 from datetime import date
 import calendar
 obj = calendar.Calendar()
 
-#Login page
+"""
+Add a DB with an API.
+Create a function on the icon to delete tasks. 
+
+
+"""
 
 
 #Calendar
@@ -32,6 +53,23 @@ def main(page: Page):
               e.control.update()
 
 #Task Entry
+
+  def DeleteAnimation (e):
+      if e.data == 'true':
+          e.control.content.controls[0].offset = transform.Offset(-0.5, 0)
+          e.control.content.controls[0].update()
+
+          e.control.content.controls[0].opacity = 1
+          e.control.content.controls[0].update()
+      else:
+          e.control.content.controls[0].offset = transform.Offset(0, 0)
+          e.control.content.controls[0].update()
+
+          e.control.content.controls[0].opacity = 0
+          e.control.content.controls[0].update()
+
+
+
   def _create_entry(e):
       _content_column.controls.append(
           Row(
@@ -50,10 +88,37 @@ def main(page: Page):
                           size=10, color='white70'
                       ),
                   ),
-              ]
+                  Container(
+                      alignment=alignment.center_right,
+                      animate=animation.Animation(1000, 'ease'),
+                      on_hover=lambda e: DeleteAnimation(e),
+                      content=Row(
+                          alignment='end',
+                          spacing=0,
+                          controls=[
+                              Text(
+                                  'DELETE',
+                                  opacity=0,
+                                  size=9,
+                                  color='white70',
+                                  offset=transform.Offset(0, 0),
+                                  animate_offset=animation.Animation(
+                                      duration=900, curve='ease'
+                                  ),
+                                  animate_opacity=200,
+                              ),
+                              IconButton(
+                                  icon=icons.DELETE_ROUNDED,
+                                  icon_size=19,
+                                  icon_color='light_grey',
+                              ),
+                          ],
+                      ),
+                  ),
+              ],
 
-          )
-      )
+          ),
+      ),
 
       _content_column.update()
       
